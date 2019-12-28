@@ -1,0 +1,112 @@
+version: '2.1'
+services:
+  es1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    container_name: es1
+    environment:
+      - node.name=es1
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es2,es3
+      - cluster.initial_master_nodes=es1,es2,es3
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es1data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+
+  es2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    container_name: es2
+    environment:
+      - node.name=es2
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es1,es3
+      - cluster.initial_master_nodes=es1,es2,es3
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es2data:/usr/share/elasticsearch/data
+    networks:
+      - elastic
+
+  es3:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    container_name: es3
+    environment:
+      - node.name=es3
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es1,es2
+      - cluster.initial_master_nodes=es1,es2,es3
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es3data:/usr/share/elasticsearch/data
+    networks:
+      - elastic
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.5.1
+    container_name: kibana
+    depends_on:
+      - es1
+    environment:
+      SERVER_NAME: kibana.local
+      ELASTICSEARCH_HOSTS: "http://es1:9200"
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+
+  headPlugin:
+    image: 'mobz/elasticsearch-head:5'
+    container_name: head
+    ports:
+      - 5602:9100
+    networks:
+      - elastic
+
+  # flask:
+    # build:
+      # context: ../scripts/
+      # dockerfile: flask.dockerfile
+    # container_name: flask
+    # ports:
+      # - 4000:4000
+    # networks:
+      # - elastic
+
+volumes:
+  es1data:
+    driver: local
+  es2data:
+    driver: local
+  es3data:
+    driver: local
+
+networks:
+  elastic:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.168.238.0/24"
