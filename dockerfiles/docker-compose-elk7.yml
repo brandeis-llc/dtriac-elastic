@@ -1,7 +1,9 @@
 version: '2.1'
 services:
   es1:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    build:
+      context: .
+      dockerfile: elastic7.dockerfile
     container_name: es1
     environment:
       - node.name=es1
@@ -24,7 +26,9 @@ services:
       - elastic
 
   es2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    build:
+      context: .
+      dockerfile: elastic7.dockerfile
     container_name: es2
     environment:
       - node.name=es2
@@ -45,7 +49,9 @@ services:
       - elastic
 
   es3:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    build:
+      context: .
+      dockerfile: elastic7.dockerfile
     container_name: es3
     environment:
       - node.name=es3
