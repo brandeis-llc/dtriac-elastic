@@ -1,4 +1,9 @@
+
 .*.swp
+# wiki dumps archives and uncompressed dirs
+*.json.gz
+*-splits/
+
 # linux
 *~
 .directory # KDE directory preferences
