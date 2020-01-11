@@ -6,9 +6,10 @@ services:
       dockerfile: elastic6-plugged.dockerfile
     container_name: es1
     environment:
+      - indices.query.bool.max_clause_count=102400
       - cluster.name=es-docker-cluster
       - bootstrap.memory_lock=true
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
       - http.cors.enabled=true
       - http.cors.allow-origin=*
       - discovery.zen.minimum_master_nodes=2
@@ -29,9 +30,10 @@ services:
       dockerfile: elastic6-plugged.dockerfile
     container_name: es2
     environment:
+      - indices.query.bool.max_clause_count=102400
       - cluster.name=es-docker-cluster
       - bootstrap.memory_lock=true
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
       - http.cors.enabled=true
       - http.cors.allow-origin=*
       - discovery.zen.ping.unicast.hosts=es1
@@ -51,9 +53,10 @@ services:
       dockerfile: elastic6-plugged.dockerfile
     container_name: es3
     environment:
+      - indices.query.bool.max_clause_count=102400
       - cluster.name=es-docker-cluster
       - bootstrap.memory_lock=true
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
       - http.cors.enabled=true
       - http.cors.allow-origin=*
       - discovery.zen.ping.unicast.hosts=es1
