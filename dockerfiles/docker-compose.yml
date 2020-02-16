@@ -81,7 +81,7 @@ services:
       - esnet
   flask:
     build:
-      context: ../scripts/
+      context: .
       dockerfile: flask.dockerfile
     container_name: flask
     ports:
