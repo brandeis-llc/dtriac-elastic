@@ -3,9 +3,7 @@
 `docker-compose.yml` file provides ELK + dtriac-webapp instance as orchestrated containers using `docker-compose`. 
 
 ## Running 
-Run `docker-compose up`. Notice the order of arguments for specifying the compose file.
+Run `docker-compose -f <yml_file_name> up`. Notice the order of arguments for specifying the compose file.
 ```
-docker-compose -f docker-compose.yml up
+docker-compose -f docker-compose-2001demo.yml up
 ```
-
-Running this will create three docker volumes at current directory (`esdata{1,2,3}`) that can be copied to other machines for migration. 
